@@ -34,6 +34,57 @@ The Adapter Pattern solves this by creating an adapter class that:
 2. Implements the expected interface (extends RoundPeg)
 3. Translates between the two interfaces
 
+### Class Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                          CLIENT                                 │
+│                      (RoundHole)                                │
+│                                                                 │
+│  - radius: double                                               │
+│  + fits(RoundPeg): boolean                                      │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             │ uses
+                             │
+                 ┌───────────▼─────────────┐
+                 │    ◄◄interface►►        │
+                 │      RoundPeg           │
+                 ├─────────────────────────┤
+                 │   + getRadius(): double │
+                 └───────────┬─────────────┘
+                             │
+                  ┌──────────┴──────────┐
+                  │                     │
+         ┌────────▼────────┐   ┌────────▼──────────────┐
+         │  RoundPeg       │   │ ◄◄Adapter►►           │
+         │ (Concrete)      │   │ SquarePegAdapter      │
+         ├─────────────────┤   ├─────────────────────────┤
+         │- radius: double │   │ - peg: SquarePeg       │
+         ├─────────────────┤   ├─────────────────────────┤
+         │+ RoundPeg(...)  │   │ + SquarePegAdapter(...) │
+         │+ getRadius()    │   │ + getRadius(): double   │
+         └─────────────────┘   └────────────┬────────────┘
+                                            │
+                                      wraps │
+                                            │
+                                    ┌───────▼──────────┐
+                                    │  SquarePeg       │
+                                    │  (Adaptee)       │
+                                    ├──────────────────┤
+                                    │ - width: double  │
+                                    ├──────────────────┤
+                                    │ + SquarePeg(...) │
+                                    │ + getWidth()     │
+                                    └──────────────────┘
+```
+
+**Legend:**
+- `Client (RoundHole)` - Expects RoundPeg interface
+- `Target (RoundPeg)` - The expected interface
+- `Adaptee (SquarePeg)` - The incompatible class
+- `Adapter (SquarePegAdapter)` - Bridges between the client and adaptee
+
 ---
 
 ## Implementation Details
